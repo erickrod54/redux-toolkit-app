@@ -1,27 +1,22 @@
 import { createSlice } from "@reduxjs/toolkit";
+import cartItems from '../../cartItems'
 
-/**React-redux toolkit app - version 1  - 'cartSlice' js - 
+/**React-redux toolkit app - version 2  - 'cartSlice' js - 
  * Features:
  * 
- *      --> Importing 'createSlice' from redux.  
+ *      --> Setting amount value to 4, in order
+ *          to visualize and build CartContainer
+ *          Component
  * 
- *      --> Building the slice 'cartSlice'
- * 
- * Note: A 'slice' in redux is a piece of state that controls a
- * feature
- * 
- * The 'createSlice' is own to redux and it creates a state piece
- * 
- * this 'slice' is going to be imported in store to be set as 
- * a 'cart' prop ( notice this is the first feature but the cart
- * can have many more )
+ * Note: Setting amount value will display the CartContainer
+ * reference to CarContainer code.
  */
 
 
 /**to test it out change the amount value */
 const initialState = {
-    cartItems: [],
-    amount:0,
+    cartItems: cartItems,
+    amount:4,
     total:0,
     isLoading:true,
 };
