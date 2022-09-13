@@ -1,15 +1,24 @@
 import { createSlice } from "@reduxjs/toolkit";
 import cartItems from '../../cartItems'
 
-/**React-redux toolkit app - version 2  - 'cartSlice' js - 
+/**React-redux toolkit app - version 3  - 'cartSlice' js - 
  * Features:
  * 
- *      --> Setting amount value to 4, in order
- *          to visualize and build CartContainer
- *          Component
+ *      --> Building 'clearCart' feature 
+ *          in reducers - is going to be
+ *          more actions-
  * 
- * Note: Setting amount value will display the CartContainer
- * reference to CarContainer code.
+ *      --> Destructuring and exporting 'clearCart'
+ *          from 'cartSlice.actions'
+ * 
+ * Note: when i set 'console.log(cartSlice)' i can
+ * se that actions is a method of cartSlice - i can 
+ * check that actually i can mutate the sate due to
+ * 
+ * the mutation directly in the state is posible 
+ * thanks to 'Immer libary' - this owns to redux
+ * and behind the scenes makes all the complex
+ * process-
  */
 
 
@@ -24,7 +33,12 @@ const initialState = {
 
 const cartSlice = createSlice({
     name:'cart',
-    initialState
+    initialState,
+    reducers:{
+        clearCart:(state) => {
+            state.cartItems = [];
+        }
+    }
 })
 
 /**if a log cartSlice i can check all the method avaibles 
@@ -36,4 +50,7 @@ const cartSlice = createSlice({
 /**after export the 'cartSlice', i can import it in
  * the store naming it as i need - the reducer is also a 
  * method from 'redux' */
+
+export const { clearCart } = cartSlice.actions;
+
 export default cartSlice.reducer;
