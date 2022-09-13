@@ -1,17 +1,39 @@
 import React from "react";
+import { ChevronDown, ChevronUp } from '../icons';
 
-/**React-redux toolkit app - version 2  - 'CartItem' js - 
+/**React-redux toolkit app - version 3  - 'CartItem' js - 
  * Features:
  * 
- *      --> Building basic 'CartItem' Component.
+ *      --> Building 'cartItem' Component.
  * 
- * Note: Setting amount value will display the CartContainer
- * reference to CarContainer code.
+ *      --> Destructuing props to build 'CartItem'.
+ * 
+ * Note: these props were previusly spreaded on 
+ * CartContainer -check the code for reference -
+ * and here i just access them.
  */
 
-const CartItem = () => {
+const CartItem = ({ id, img, title, price, amount }) => {
     return(
-        <div>CartItems</div>
+        <article className="cart-item">
+            <img src={img} alt={title}/>
+            <div>
+                <h4>{title}</h4>
+                <h4 className="item-price">
+                    ${price}
+                </h4>
+                <button className="remove-btn">remove</button>
+            </div>
+            <div>
+                <button className="amount-btn">
+                    <ChevronUp />
+                </button>
+                <p className="amount">{amount}</p>
+                <button className="amount-btn">
+                    <ChevronDown />
+                </button>
+            </div>
+        </article>
     )
 }
 
