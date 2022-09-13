@@ -1,15 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
 import cartItems from '../../cartItems'
 
-/**React-redux toolkit app - version 3  - 'cartSlice' js - 
+/**React-redux toolkit app - version 4  - 'cartSlice' js - 
  * Features:
  * 
- *      --> Building 'clearCart' feature 
+ *      --> Building 'removeItem' feature 
  *          in reducers - is going to be
  *          more actions-
  * 
- *      --> Destructuring and exporting 'clearCart'
- *          from 'cartSlice.actions'
+ *      --> Accesing to the payload to remove
+ *          the item.
  * 
  * Note: when i set 'console.log(cartSlice)' i can
  * se that actions is a method of cartSlice - i can 
@@ -19,6 +19,19 @@ import cartItems from '../../cartItems'
  * thanks to 'Immer libary' - this owns to redux
  * and behind the scenes makes all the complex
  * process-
+ * 
+ * if i set for remove item as:
+ * (this way i know how to access
+ * and build 'itemId = action.payload;' )
+ *  
+ *      removeItem: (state, action) => {
+ *           console.log(action)
+ *       }
+ * 
+ * i can validate the action and test that i'm
+ * getting the payload, so visualizing and validating
+ * that i just proceed to build it
+ * 
  */
 
 
@@ -37,6 +50,10 @@ const cartSlice = createSlice({
     reducers:{
         clearCart:(state) => {
             state.cartItems = [];
+        },
+        removeItem: (state, action) => {
+            const itemId = action.payload;
+            state.cartItems = state.cartItems.filter((item) => item.id !== itemId )
         }
     }
 })
@@ -51,6 +68,6 @@ const cartSlice = createSlice({
  * the store naming it as i need - the reducer is also a 
  * method from 'redux' */
 
-export const { clearCart } = cartSlice.actions;
+export const { clearCart, removeItem } = cartSlice.actions;
 
 export default cartSlice.reducer;
