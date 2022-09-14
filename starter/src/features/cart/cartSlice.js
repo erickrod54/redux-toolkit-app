@@ -1,37 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 import cartItems from '../../cartItems'
 
-/**React-redux toolkit app - version 4  - 'cartSlice' js - 
+/**React-redux toolkit app - version 5  - 'cartSlice' js - 
  * Features:
  * 
- *      --> Building 'removeItem' feature 
- *          in reducers - is going to be
- *          more actions-
+ *      --> Building increase feature.
  * 
- *      --> Accesing to the payload to remove
- *          the item.
+ *      --> Building 'decrease' feature.
  * 
- * Note: when i set 'console.log(cartSlice)' i can
- * se that actions is a method of cartSlice - i can 
- * check that actually i can mutate the sate due to
- * 
- * the mutation directly in the state is posible 
- * thanks to 'Immer libary' - this owns to redux
- * and behind the scenes makes all the complex
- * process-
- * 
- * if i set for remove item as:
- * (this way i know how to access
- * and build 'itemId = action.payload;' )
- *  
- *      removeItem: (state, action) => {
- *           console.log(action)
- *       }
- * 
- * i can validate the action and test that i'm
- * getting the payload, so visualizing and validating
- * that i just proceed to build it
- * 
+ * Note: for 'increase' and 'decrease' features i use
+ * the state and pull the payload in order to use the 
+ * id and compare with the state id before the increase
+ * or decrease value
  */
 
 
@@ -54,6 +34,16 @@ const cartSlice = createSlice({
         removeItem: (state, action) => {
             const itemId = action.payload;
             state.cartItems = state.cartItems.filter((item) => item.id !== itemId )
+        },
+        increase: (state, { payload }) => {
+            const cartItem = cartItems.find((item) => item.id ===
+            payload.id)
+            cartItem.amount = cartItem.amount + 1;  
+        },
+        decrease: (state, { payload }) => {
+            const cartItem = cartItems.find((item) => item.id ===
+            payload.id)
+            cartItem.amount = cartItem.amount - 1;  
         }
     }
 })
@@ -68,6 +58,6 @@ const cartSlice = createSlice({
  * the store naming it as i need - the reducer is also a 
  * method from 'redux' */
 
-export const { clearCart, removeItem } = cartSlice.actions;
+export const { clearCart, removeItem, increase, decrease } = cartSlice.actions;
 
 export default cartSlice.reducer;
