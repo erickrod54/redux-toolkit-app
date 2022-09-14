@@ -1,16 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
 import cartItems from '../../cartItems'
 
-/**React-redux toolkit app - version 5  - 'cartSlice' js - 
- * Features: (same version - fixing state accessing)
+/**React-redux toolkit app - version 6  - 'cartSlice' js - 
+ * Features:
  * 
- *      --> Fixing the state 'state.cartItems'
- *          bug.
+ *      --> Building 'calculateTotals' feature.
  * 
  * Note: for 'increase' and 'decrease' features i use
  * the state and pull the payload in order to use the 
  * id and compare with the state id before the increase
  * or decrease value
+ * 
+ * this feature will increase or decrease dinamiclly the
+ * item totals on the right corner icons and the 
+ * CartItem footer
  */
 
 
@@ -43,6 +46,25 @@ const cartSlice = createSlice({
             const cartItem = state.cartItems.find((item) => item.id ===
             payload.id)
             cartItem.amount = cartItem.amount - 1;  
+        },
+        calculateTotals:(state) => {
+            /**i create this two variables */
+            let amount = 0
+            let total = 0
+            /**i access to the state and iterate
+             * on the item */
+            state.cartItems.forEach((item) => {
+                /**i totalize the 'item' in 'amount'*/
+                amount += item.amount
+                /**for the total i totalize
+                 * 'item' multiplied for the 'price'*/
+                total += item.amount * item.price
+            })
+            /**i assing the resulting values from
+             * the iteration to the 'state' values
+             */
+            state.amount = amount;
+            state.total = total;
         }
     }
 })
@@ -57,6 +79,7 @@ const cartSlice = createSlice({
  * the store naming it as i need - the reducer is also a 
  * method from 'redux' */
 
-export const { clearCart, removeItem, increase, decrease } = cartSlice.actions;
+/**i export the calculateTotal in order to implement it */
+export const { clearCart, removeItem, increase, decrease, calculateTotals } = cartSlice.actions;
 
 export default cartSlice.reducer;
