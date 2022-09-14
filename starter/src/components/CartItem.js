@@ -1,12 +1,19 @@
 import React from "react";
 import { ChevronDown, ChevronUp } from '../icons';
+import { removeItem } from "../features/cart/cartSlice";
+import { useDispatch } from "react-redux"; 
 
-/**React-redux toolkit app - version 3  - 'CartItem' js - 
+/**React-redux toolkit app - version 4  - 'CartItem' js - 
  * Features:
  * 
- *      --> Building 'cartItem' Component.
+ *      --> Importing 'useDispatch' hook from 
+ *          redux.
  * 
- *      --> Destructuing props to build 'CartItem'.
+ *      --> Importing 'removeItem' action from 
+ *          the 'cartSlice' 
+ * 
+ *      --> Dispatching 'removeItem' action
+ *          in order to remove the item.
  * 
  * Note: these props were previusly spreaded on 
  * CartContainer -check the code for reference -
@@ -14,6 +21,10 @@ import { ChevronDown, ChevronUp } from '../icons';
  */
 
 const CartItem = ({ id, img, title, price, amount }) => {
+
+    /**here  asign 'useDispatch' to 'dispatch' variable*/
+    const dispatch = useDispatch();
+
     return(
         <article className="cart-item">
             <img src={img} alt={title}/>
@@ -22,7 +33,12 @@ const CartItem = ({ id, img, title, price, amount }) => {
                 <h4 className="item-price">
                     ${price}
                 </h4>
-                <button className="remove-btn">remove</button>
+                {/**here i trigger the 'removeItem' using
+                 * dispatch and targeting the 'id'*/}
+                <button 
+                    className="remove-btn"
+                    onClick={() => { dispatch(removeItem(id))}}
+                    >remove</button>
             </div>
             <div>
                 <button className="amount-btn">
