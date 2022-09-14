@@ -1,19 +1,16 @@
 import React from "react";
 import { ChevronDown, ChevronUp } from '../icons';
-import { removeItem } from "../features/cart/cartSlice";
+import { removeItem, increase, decrease } from "../features/cart/cartSlice";
 import { useDispatch } from "react-redux"; 
 
-/**React-redux toolkit app - version 4  - 'CartItem' js - 
+/**React-redux toolkit app - version 5  - 'CartItem' js - 
  * Features:
  * 
- *      --> Importing 'useDispatch' hook from 
- *          redux.
+ *      --> Importing 'increase', and 'decrease'
+ *          features from 'cartSlice'.
  * 
- *      --> Importing 'removeItem' action from 
- *          the 'cartSlice' 
- * 
- *      --> Dispatching 'removeItem' action
- *          in order to remove the item.
+ *      --> Dispatching 'increase' and 'decrease'
+ *          features.
  * 
  * Note: these props were previusly spreaded on 
  * CartContainer -check the code for reference -
@@ -41,11 +38,33 @@ const CartItem = ({ id, img, title, price, amount }) => {
                     >remove</button>
             </div>
             <div>
-                <button className="amount-btn">
+                {/**here i trigger the increase targeting
+                 * the item 'id'*/}
+                <button 
+                className="amount-btn"
+                onClick={() => {
+                    dispatch(increase({id}))
+                }}
+                >
                     <ChevronUp />
                 </button>
                 <p className="amount">{amount}</p>
-                <button className="amount-btn">
+                {/**for the decrease will depend on 
+                 * 'amount' value, will 'removeItem'
+                 * and also 'decrease' both depending
+                 * on the 'id' ( i have to return it,
+                 * if not, it will keep going )
+                 */}
+                <button 
+                className="amount-btn"
+                onClick={() => {
+                    if(amount === 1){
+                        dispatch(removeItem(id))
+                        return;
+                    }
+                    dispatch(decrease({id}))
+                }}
+                >
                     <ChevronDown />
                 </button>
             </div>

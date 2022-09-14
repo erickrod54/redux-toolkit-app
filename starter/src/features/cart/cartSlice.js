@@ -2,11 +2,10 @@ import { createSlice } from "@reduxjs/toolkit";
 import cartItems from '../../cartItems'
 
 /**React-redux toolkit app - version 5  - 'cartSlice' js - 
- * Features:
+ * Features: (same version - fixing state accessing)
  * 
- *      --> Building increase feature.
- * 
- *      --> Building 'decrease' feature.
+ *      --> Fixing the state 'state.cartItems'
+ *          bug.
  * 
  * Note: for 'increase' and 'decrease' features i use
  * the state and pull the payload in order to use the 
@@ -36,12 +35,12 @@ const cartSlice = createSlice({
             state.cartItems = state.cartItems.filter((item) => item.id !== itemId )
         },
         increase: (state, { payload }) => {
-            const cartItem = cartItems.find((item) => item.id ===
+            const cartItem = state.cartItems.find((item) => item.id ===
             payload.id)
             cartItem.amount = cartItem.amount + 1;  
         },
         decrease: (state, { payload }) => {
-            const cartItem = cartItems.find((item) => item.id ===
+            const cartItem = state.cartItems.find((item) => item.id ===
             payload.id)
             cartItem.amount = cartItem.amount - 1;  
         }
