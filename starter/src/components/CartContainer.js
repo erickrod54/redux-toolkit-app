@@ -4,19 +4,13 @@ import { useDispatch ,useSelector } from 'react-redux';
 import { clearCart } from '../features/cart/cartSlice'
 
 
-/**React-redux toolkit app - version 3  - 'CartContainer' js - 
+/**React-redux toolkit app - version 6  - 'CartContainer' js - 
  * Features:
  * 
- *      --> Implementing 'useDispatch' hook from
- *          'react-redux' to dispatch 'clearCart'
- *          action.
+ *      --> Implementing 'toFix' to 'total' in
+ *          order to fix the decimals bug.
  * 
- *      --> Triggering 'clearcart' in dispacth to 
- *          clear the items from the cart
- * 
- * Note: i define the functuionality in the slice
- * 'cartSlice' and invoke it in dispatch action
- * and will trigger 'clearCart'.
+ * Note: to fix is going to be set with 2 decimals.
  */
 
 const CartContainer = () => {
@@ -52,7 +46,7 @@ const CartContainer = () => {
             <hr />
             <div className="cart-total">
                 <h4>
-                    total <span>${total}</span>
+                    total <span>${total.toFixed(2)}</span>
                 </h4>
             </div>
             {/**here on click -using arrow function- 
