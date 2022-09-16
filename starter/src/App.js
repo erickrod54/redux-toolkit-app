@@ -3,25 +3,32 @@ import { useEffect } from "react";
 import CartContainer from "./components/CartContainer";
 import { useDispatch, useSelector } from 'react-redux';
 import { calculateTotals } from "./features/cart/cartSlice";
+import Modal from "./components/Modal";
 
-/**React-redux toolkit app - version 6  - App js js - 
+/**React-redux toolkit app - version 8  - App js js - 
  * Features:
  * 
- *      --> Destructuring 'cartItems' from the 'store'.
+ *      --> Destructuring 'isOpen' from 'store.modal'.
  * 
- *      --> Dispatching 'calculateTotals' render the 
- *          totals when the app mounts.
+ *      -->Implementing useEffect to dispatch 
+ *        'calculateTotals' when App mounts depending
+ *          on the 'cartItems'.
  * 
- * Note: Setting amount value will display the CartContainer
- * reference to CarContainer code.
+ *      --> Using shortcircuit operator to render 
+ *          'Modal' Component.
+ * 
+ * Note: the complete fujnctionality will be set in next
+ * versions
  */
 
 function App() {
 
-  /**here i destructure cartItems */
+  
   const { cartItems } = useSelector((store) => store.cart)
 
-  /**here i assign the 'dispatch' hook */
+  /**here i destructure 'isOpen' from the store*/
+  const { isOpen } = useSelector((store) => store.modal)
+  
   const dispatch = useDispatch() 
 
   /**here i trigger the 'calculateTotals' depending on
@@ -33,6 +40,7 @@ function App() {
 
   return(
     <main>
+      {isOpen && <Modal /> }
       <Navbar />
       <CartContainer />
     </main>
