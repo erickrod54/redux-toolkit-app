@@ -1,29 +1,43 @@
-import { createSlice } from "@reduxjs/toolkit";
-import cartItems from '../../cartItems'
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-/**React-redux toolkit app - version 6  - 'cartSlice' js - 
+
+/**React-redux toolkit app - version 9  - 'cartSlice' js - 
  * Features:
  * 
- *      --> Building 'calculateTotals' feature.
+ *      --> Building 'getCartItems' action in order
+ *          to get the cartItems from an API.
  * 
- * Note: for 'increase' and 'decrease' features i use
- * the state and pull the payload in order to use the 
- * id and compare with the state id before the increase
- * or decrease value
+ *      --> After 'reducers' object building 'extraReducers'
+ *          in order to set 'getCartItems' action in its three
+ *          states 'pending', 'fulfilled', and 'rejected'
  * 
- * this feature will increase or decrease dinamiclly the
- * item totals on the right corner icons and the 
- * CartItem footer
+ *      --> Setting the 'cartItems' > 'intialState' to
+ *          an empty array '[]'
+ * 
+ * Note: 'pending', 'fulfilled', and 'rejected' all this 
+ * states comes from the redux object.
+ * 
+ * the cartItems: [] initial state is set to empty array
+ * after i already build the 'getCartItems' action
  */
 
+/**this is the API url */
+const url = 'https://course-api.com/react-useReducer-cart-project'
 
 /**to test it out change the amount value */
 const initialState = {
-    cartItems: cartItems,
+    cartItems: [],
     amount:4,
     total:0,
     isLoading:true,
 };
+
+export const getCartItems = createAsyncThunk('cart/getCartItems', 
+    () => {
+        return fetch(url)
+            .then((resp) => resp.json())
+            .catch((err) => console.log(err))
+    })
 
 
 const cartSlice = createSlice({
@@ -66,6 +80,19 @@ const cartSlice = createSlice({
             state.amount = amount;
             state.total = total;
         }
+    },
+    extraReducers:{
+        [getCartItems.pending]:(state) => {
+            state.isLoading = true
+        },
+        [getCartItems.fulfilled]:(state, action) => {
+            console.log('this is the action getCartItems ==>',action)
+            state.isLoading = false
+            state.cartItems = action.payload
+        },
+        [getCartItems.rejected]:(state) => {
+            state.isLoading = false
+        }
     }
 })
 
@@ -83,3 +110,5 @@ const cartSlice = createSlice({
 export const { clearCart, removeItem, increase, decrease, calculateTotals } = cartSlice.actions;
 
 export default cartSlice.reducer;
+
+
