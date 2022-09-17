@@ -2,29 +2,28 @@ import Navbar from "./components/Nabvar";
 import { useEffect } from "react";
 import CartContainer from "./components/CartContainer";
 import { useDispatch, useSelector } from 'react-redux';
-import { calculateTotals } from "./features/cart/cartSlice";
+import { calculateTotals, getCartItems } from "./features/cart/cartSlice";
 import Modal from "./components/Modal";
 
-/**React-redux toolkit app - version 8  - App js js - 
+/**React-redux toolkit app - version 9  - App js js - 
  * Features:
  * 
- *      --> Destructuring 'isOpen' from 'store.modal'.
+ *      --> Destructuring 'isLoading' state from the 
+ *          'store.cart'.
  * 
- *      -->Implementing useEffect to dispatch 
- *        'calculateTotals' when App mounts depending
- *          on the 'cartItems'.
+ *      --> Building a second 'useEffect' in order to
+ *          dispatch the 'getCartItems' actions once 
+ *          the 'App' mounts
  * 
- *      --> Using shortcircuit operator to render 
- *          'Modal' Component.
+ * Note: I can check how the actions get done in detail 
+ * using 'DevTools' > 'Redux' tab
  * 
- * Note: the complete fujnctionality will be set in next
- * versions
  */
 
 function App() {
 
   
-  const { cartItems } = useSelector((store) => store.cart)
+  const { cartItems, isLoading } = useSelector((store) => store.cart)
 
   /**here i destructure 'isOpen' from the store*/
   const { isOpen } = useSelector((store) => store.modal)
@@ -37,6 +36,17 @@ function App() {
     dispatch(calculateTotals())
     // eslint-disable-next-line
   },[cartItems]);
+
+  useEffect(() => {
+    dispatch(getCartItems())
+    // eslint-disable-next-line
+  }, [])
+
+  if (isLoading) {
+    return <div className="loading">
+      <h1>Loading...</h1>
+    </div>
+  }
 
   return(
     <main>
