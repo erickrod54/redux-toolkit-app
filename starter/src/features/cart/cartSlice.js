@@ -1,28 +1,41 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
+/**uncomment to test 'thunkAPI.dispatch' */
+//import { openModal } from "../modal/modalSlice";
 
-/**React-redux toolkit app - version 9  - 'cartSlice' js - 
+import axios from "axios";
+
+/**React-redux toolkit app - version 10  - 'cartSlice' js - 
  * Features:
  * 
- *      --> Building 'getCartItems' action in order
- *          to get the cartItems from an API.
+ *      --> Testing 'axios' options combined with 
+ *          'asyncThunk'
  * 
- *      --> After 'reducers' object building 'extraReducers'
- *          in order to set 'getCartItems' action in its three
- *          states 'pending', 'fulfilled', and 'rejected'
+ *      --> Testing thunkAPI options
  * 
- *      --> Setting the 'cartItems' > 'intialState' to
- *          an empty array '[]'
+ * Note: First Test** - Axios combined with asyncThunk to
+ * pass a value 'name' throught the async ( is being passed 
+ * previouslly throught the useEffect )
  * 
- * Note: 'pending', 'fulfilled', and 'rejected' all this 
- * states comes from the redux object.
+ * Second Test** - The thunkAPI itself will give me powerful 
+ * options as (these actions are over all 'reducers' object
+ * i can get states features and implemented right away):
  * 
- * the cartItems: [] initial state is set to empty array
- * after i already build the 'getCartItems' action
+ *          --> dispatch(), getState(), rejectWithValue()
+ *              requestId(), signal
+ * 
+ * for dispatch a feature i have to import first the feature
+ * - the case for 'openModal' -, and using thunkAPI i'll 
+ * dispatch  
+ * 
+ * here i test 'dispatch()', 'getState()', 'rejectWithValue()'
  */
 
 /**this is the API url */
 const url = 'https://course-api.com/react-useReducer-cart-project'
+
+/**uncomment to test 'rejectWithValue()'*/
+//const url = 'https://course-api.com/react-useReducer-cart-projectss';
 
 /**to test it out change the amount value */
 const initialState = {
@@ -33,10 +46,31 @@ const initialState = {
 };
 
 export const getCartItems = createAsyncThunk('cart/getCartItems', 
-    () => {
-        return fetch(url)
-            .then((resp) => resp.json())
-            .catch((err) => console.log(err))
+    async (name, thunkAPI ) => {
+        try {
+            /**First test - uncomment to try it out */
+            //console.log('value passed througth the async ==>',name)
+
+            /**Second test */
+            console.log(thunkAPI)
+            
+            /**getting reducers state */
+            /**uncomment to test it */
+            //console.log('here i get the reducer states ==>', thunkAPI.getState())
+            
+            /**triggering 'openModal' - this feature is in modalSlice
+             * but thanks to 'thunkApi' i can bring it in*/
+            /**uncomment to test it */
+
+            //thunkAPI.dispatch(openModal())
+
+
+            const resp = await axios(url)
+            return resp.data
+        } catch (error) {
+            /**check in the 'payload' of the resulting object */
+            return thunkAPI.rejectWithValue('something went wrong')
+        }
     })
 
 
@@ -86,11 +120,17 @@ const cartSlice = createSlice({
             state.isLoading = true
         },
         [getCartItems.fulfilled]:(state, action) => {
-            console.log('this is the action getCartItems ==>',action)
+            /**Testing that the action is sent and dispatched -
+             * uncomment to try it out*/
+            
+            //console.log('this is the action getCartItems ==>',action)
             state.isLoading = false
             state.cartItems = action.payload
         },
-        [getCartItems.rejected]:(state) => {
+        /** now i handle the error using 'rejectWithValue()', so
+         * i set the action*/
+        [getCartItems.rejected]:(state, action) => {
+            console.log(action)
             state.isLoading = false
         }
     }
@@ -110,5 +150,6 @@ const cartSlice = createSlice({
 export const { clearCart, removeItem, increase, decrease, calculateTotals } = cartSlice.actions;
 
 export default cartSlice.reducer;
+
 
 
