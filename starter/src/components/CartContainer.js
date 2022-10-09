@@ -24,7 +24,7 @@ const CartContainer = () => {
 
     const {cartItems, total, amount }  = useSelector(( store ) => store.cart)
 
-    console.log(cartItems)
+    //console.log(cartItems)
 
     if (amount < 1 ) {
         return(
